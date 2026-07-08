@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amal Track</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2317352d'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='34'%3E✓%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <section id="welcomeScreen" class="screen active">
+      <div class="hero-card">
+        <div class="logo">Amal Track</div>
+        <h1>Pantau Amalan.<br />Hidupkan Muhasabah.</h1>
+        <p>Hari ini adalah peluang baru untuk kembali kepada Allah.</p>
+        <button type="button" onclick="startApp()">Mulakan</button>
+      </div>
+    </section>
+
+    <section id="introScreen" class="screen">
+      <div class="card">
+        <h2>Apakah Amal Track?</h2>
+        <p>
+          Amal Track ialah panduan harian untuk membantu anda bermuhasabah
+          dan memantau amalan berdasarkan keutamaan dalam Islam.
+        </p>
+        <p>
+          Ia bukan untuk membandingkan diri dengan orang lain, tetapi sebagai
+          peringatan agar kita memperbaiki hubungan dengan Allah dan manusia.
+        </p>
+        <button type="button" onclick="goDashboard()">Faham & Teruskan</button>
+      </div>
+    </section>
+
+    <section id="dashboardScreen" class="screen">
+      <header class="topbar">
+        <div>
+          <h2>Assalamualaikum</h2>
+          <p id="todayDate"></p>
+        </div>
+        <button type="button" class="small-btn" onclick="resetToday()">Reset</button>
+      </header>
+
+      <div class="dashboard-tabs" role="tablist" aria-label="Pilihan dashboard">
+        <button type="button" class="tab-btn active" data-dashboard-tab="daily" onclick="showDashboardView('daily')">Harian</button>
+        <button type="button" class="tab-btn" data-dashboard-tab="weekly" onclick="showDashboardView('weekly')">Mingguan</button>
+        <button type="button" class="tab-btn" data-dashboard-tab="monthly" onclick="showDashboardView('monthly')">Bulanan</button>
+      </div>
+
+      <div id="dailyDashboard" class="dashboard-panel active">
+        <div class="summary-card">
+          <p class="label">Ringkasan Hari Ini</p>
+          <h3 id="summaryText">0 amalan ditanda</h3>
+          <div class="progress" aria-hidden="true">
+            <div id="progressBar"></div>
+          </div>
+          <p class="soft-text">
+            Fokus utama ialah amalan wajib dahulu, kemudian sunnah, akhlak dan muhasabah.
+          </p>
+        </div>
+
+        <section id="checklistContainer" aria-label="Senarai amalan harian"></section>
+
+        <button type="button" class="save-btn" onclick="saveToday()">Simpan Amalan Hari Ini</button>
+      </div>
+
+      <div id="weeklyDashboard" class="dashboard-panel">
+        <div class="summary-card">
+          <p class="label">Dashboard Mingguan</p>
+          <h3 id="weeklySummaryText">0 amalan ditanda minggu ini</h3>
+          <div class="stat-row">
+            <div>
+              <span class="stat-value" id="weeklyDaysText">0/7</span>
+              <span class="stat-label">hari direkod</span>
+            </div>
+            <div>
+              <span class="stat-value" id="weeklyAverageText">0</span>
+              <span class="stat-label">purata harian</span>
+            </div>
+          </div>
+          <div class="progress" aria-hidden="true">
+            <div id="weeklyProgressBar"></div>
+          </div>
+          <p class="soft-text" id="weeklyRangeText"></p>
+        </div>
+
+        <section class="period-section" aria-label="Ringkasan hari minggu ini">
+          <h3>Hari Minggu Ini</h3>
+          <div id="weeklyDayList" class="period-list"></div>
+        </section>
+
+        <section class="period-section" aria-label="Ringkasan kategori minggu ini">
+          <h3>Kategori Mingguan</h3>
+          <div id="weeklyCategoryList" class="category-breakdown"></div>
+        </section>
+      </div>
+
+      <div id="monthlyDashboard" class="dashboard-panel">
+        <div class="summary-card">
+          <p class="label">Dashboard Bulanan</p>
+          <h3 id="monthlySummaryText">0 amalan ditanda bulan ini</h3>
+          <div class="stat-row">
+            <div>
+              <span class="stat-value" id="monthlyDaysText">0</span>
+              <span class="stat-label">hari direkod</span>
+            </div>
+            <div>
+              <span class="stat-value" id="monthlyAverageText">0</span>
+              <span class="stat-label">purata harian</span>
+            </div>
+          </div>
+          <div class="progress" aria-hidden="true">
+            <div id="monthlyProgressBar"></div>
+          </div>
+          <p class="soft-text" id="monthlyRangeText"></p>
+        </div>
+
+        <section class="period-section" aria-label="Ringkasan minggu bulan ini">
+          <h3>Minggu Bulan Ini</h3>
+          <div id="monthlyWeekList" class="period-list"></div>
+        </section>
+
+        <section class="period-section" aria-label="Ringkasan kategori bulan ini">
+          <h3>Kategori Bulanan</h3>
+          <div id="monthlyCategoryList" class="category-breakdown"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="screen">
+      <div class="card">
+        <h2>Alhamdulillah.</h2>
+        <p id="resultText"></p>
+        <p class="quote">
+          “Amalan yang paling dicintai Allah ialah amalan yang berterusan walaupun sedikit.”
+        </p>
+        <button type="button" onclick="goDashboard()">Kembali ke Dashboard</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
