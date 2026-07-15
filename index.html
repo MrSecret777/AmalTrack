@@ -5,141 +5,860 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Amal Track</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2317352d'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='34'%3E✓%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" />
+  <style>
+:root {
+  --amal-primary: #17352d;
+  --amal-primary-soft: #eaf2ef;
+  --amal-accent: #c79332;
+  --amal-surface: #f6f1e8;
+  --amal-muted: #60756d;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(199, 147, 50, 0.16), transparent 28rem),
+    var(--amal-surface);
+  color: var(--amal-primary);
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+}
+
+.screen.active {
+  display: block;
+}
+
+.dashboard-screen.active {
+  display: flex;
+  min-height: 100vh;
+}
+
+.btn-primary,
+.progress-bar {
+  --tblr-btn-bg: var(--amal-primary);
+  --tblr-btn-border-color: var(--amal-primary);
+  --tblr-btn-hover-bg: #21483e;
+  --tblr-btn-hover-border-color: #21483e;
+  background-color: var(--amal-primary);
+}
+
+.btn-outline-danger {
+  --tblr-btn-color: #9b2c2c;
+  --tblr-btn-border-color: #e8caca;
+  --tblr-btn-hover-bg: #9b2c2c;
+  --tblr-btn-hover-border-color: #9b2c2c;
+}
+
+.card {
+  border-color: rgba(23, 53, 45, 0.1);
+  box-shadow: 0 16px 36px rgba(23, 53, 45, 0.08);
+}
+
+.hero-card {
+  margin-top: 10vh;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  background: var(--amal-primary);
+  color: #f6d27a;
+  font-weight: 800;
+}
+
+.hero-title {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 7vw, 3.25rem);
+  line-height: 1.05;
+  color: var(--amal-primary);
+}
+
+.page-wrapper {
+  width: 100%;
+}
+
+.page-header {
+  padding-top: 1.5rem;
+}
+
+.page-title {
+  color: var(--amal-primary);
+}
+
+.page-pretitle,
+.subheader {
+  color: var(--amal-accent);
+}
+
+.dashboard-tabs .nav-link {
+  border: 0;
+  color: var(--amal-primary);
+  font-weight: 700;
+}
+
+.dashboard-tabs .nav-link.active {
+  background: var(--amal-primary);
+  color: #fff;
+}
+
+.dashboard-panel {
+  display: none;
+}
+
+.dashboard-panel.active {
+  display: block;
+}
+
+.stat-value {
+  color: var(--amal-primary);
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.stat-label {
+  color: var(--amal-muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.amal-category-card .card-header {
+  background: var(--amal-primary-soft);
+}
+
+.amal-category-card .card-title {
+  color: var(--amal-primary);
+  font-weight: 800;
+}
+
+.amal-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.amal-item + .amal-item {
+  border-top: 1px solid rgba(23, 53, 45, 0.08);
+}
+
+.amal-item input {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--amal-primary);
+}
+
+.period-row {
+  padding: 1rem;
+}
+
+.period-main {
+  min-width: 0;
+}
+
+.period-name {
+  color: var(--amal-primary);
+  font-weight: 800;
+}
+
+.period-meta {
+  color: var(--amal-muted);
+  font-size: 0.875rem;
+}
+
+.mini-progress {
+  height: 0.45rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e9ecef;
+}
+
+.mini-progress span {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background: var(--amal-accent);
+}
+
+.quote {
+  margin: 1rem 0;
+  border-left: 4px solid var(--amal-accent);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--amal-primary-soft);
+  color: var(--amal-primary);
+  font-style: italic;
+}
+
+@media (max-width: 575.98px) {
+  .page-header {
+    padding-top: 1rem;
+  }
+
+  .hero-card {
+    margin-top: 2rem;
+  }
+
+  .dashboard-tabs {
+    display: grid;
+    gap: 0.5rem;
+  }
+}
+  </style>
 </head>
 <body>
-  <main class="app">
+  <main class="page page-center app-shell">
     <section id="welcomeScreen" class="screen active">
-      <div class="hero-card">
-        <div class="logo">Amal Track</div>
-        <h1>Pantau Amalan.<br />Hidupkan Muhasabah.</h1>
-        <p>Hari ini adalah peluang baru untuk kembali kepada Allah.</p>
-        <button type="button" onclick="startApp()">Mulakan</button>
+      <div class="container-tight py-4">
+        <div class="card hero-card">
+          <div class="card-body text-center">
+            <div class="brand-mark">Amal Track</div>
+            <h1 class="hero-title">Pantau Amalan.<br />Hidupkan Muhasabah.</h1>
+            <p class="text-muted mb-4">Hari ini adalah peluang baru untuk kembali kepada Allah.</p>
+            <button type="button" class="btn btn-primary btn-pill px-4" onclick="startApp()">Mulakan</button>
+          </div>
+        </div>
       </div>
     </section>
 
     <section id="introScreen" class="screen">
-      <div class="card">
-        <h2>Apakah Amal Track?</h2>
-        <p>
-          Amal Track ialah panduan harian untuk membantu anda bermuhasabah
-          dan memantau amalan berdasarkan keutamaan dalam Islam.
-        </p>
-        <p>
-          Ia bukan untuk membandingkan diri dengan orang lain, tetapi sebagai
-          peringatan agar kita memperbaiki hubungan dengan Allah dan manusia.
-        </p>
-        <button type="button" onclick="goDashboard()">Faham & Teruskan</button>
+      <div class="container-tight py-4">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title h2">Apakah Amal Track?</h2>
+            <p class="text-muted">
+              Amal Track ialah panduan harian untuk membantu anda bermuhasabah
+              dan memantau amalan berdasarkan keutamaan dalam Islam.
+            </p>
+            <p class="text-muted">
+              Ia bukan untuk membandingkan diri dengan orang lain, tetapi sebagai
+              peringatan agar kita memperbaiki hubungan dengan Allah dan manusia.
+            </p>
+            <button type="button" class="btn btn-primary btn-pill" onclick="goDashboard()">Faham & Teruskan</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="dashboardScreen" class="screen">
-      <header class="topbar">
-        <div>
-          <h2>Assalamualaikum</h2>
-          <p id="todayDate"></p>
-        </div>
-        <button type="button" class="small-btn" onclick="resetToday()">Reset</button>
-      </header>
-
-      <div class="dashboard-tabs" role="tablist" aria-label="Pilihan dashboard">
-        <button type="button" class="tab-btn active" data-dashboard-tab="daily" onclick="showDashboardView('daily')">Harian</button>
-        <button type="button" class="tab-btn" data-dashboard-tab="weekly" onclick="showDashboardView('weekly')">Mingguan</button>
-        <button type="button" class="tab-btn" data-dashboard-tab="monthly" onclick="showDashboardView('monthly')">Bulanan</button>
-      </div>
-
-      <div id="dailyDashboard" class="dashboard-panel active">
-        <div class="summary-card">
-          <p class="label">Ringkasan Hari Ini</p>
-          <h3 id="summaryText">0 amalan ditanda</h3>
-          <div class="progress" aria-hidden="true">
-            <div id="progressBar"></div>
-          </div>
-          <p class="soft-text">
-            Fokus utama ialah amalan wajib dahulu, kemudian sunnah, akhlak dan muhasabah.
-          </p>
-        </div>
-
-        <section id="checklistContainer" aria-label="Senarai amalan harian"></section>
-
-        <button type="button" class="save-btn" onclick="saveToday()">Simpan Amalan Hari Ini</button>
-      </div>
-
-      <div id="weeklyDashboard" class="dashboard-panel">
-        <div class="summary-card">
-          <p class="label">Dashboard Mingguan</p>
-          <h3 id="weeklySummaryText">0 amalan ditanda minggu ini</h3>
-          <div class="stat-row">
-            <div>
-              <span class="stat-value" id="weeklyDaysText">0/7</span>
-              <span class="stat-label">hari direkod</span>
-            </div>
-            <div>
-              <span class="stat-value" id="weeklyAverageText">0</span>
-              <span class="stat-label">purata harian</span>
+    <section id="dashboardScreen" class="screen dashboard-screen">
+      <div class="page-wrapper">
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-3 align-items-center">
+              <div class="col">
+                <div class="page-pretitle">Amal Track</div>
+                <h2 class="page-title">Assalamualaikum</h2>
+                <div id="todayDate" class="text-muted mt-1"></div>
+              </div>
+              <div class="col-auto">
+                <button type="button" class="btn btn-outline-danger" onclick="resetToday()">Reset</button>
+              </div>
             </div>
           </div>
-          <div class="progress" aria-hidden="true">
-            <div id="weeklyProgressBar"></div>
-          </div>
-          <p class="soft-text" id="weeklyRangeText"></p>
         </div>
 
-        <section class="period-section" aria-label="Ringkasan hari minggu ini">
-          <h3>Hari Minggu Ini</h3>
-          <div id="weeklyDayList" class="period-list"></div>
-        </section>
-
-        <section class="period-section" aria-label="Ringkasan kategori minggu ini">
-          <h3>Kategori Mingguan</h3>
-          <div id="weeklyCategoryList" class="category-breakdown"></div>
-        </section>
-      </div>
-
-      <div id="monthlyDashboard" class="dashboard-panel">
-        <div class="summary-card">
-          <p class="label">Dashboard Bulanan</p>
-          <h3 id="monthlySummaryText">0 amalan ditanda bulan ini</h3>
-          <div class="stat-row">
-            <div>
-              <span class="stat-value" id="monthlyDaysText">0</span>
-              <span class="stat-label">hari direkod</span>
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="card mb-3">
+              <div class="card-body p-2">
+                <div class="nav nav-pills nav-fill dashboard-tabs" role="tablist" aria-label="Pilihan dashboard">
+                  <button type="button" class="nav-link active" data-dashboard-tab="daily" onclick="showDashboardView('daily')">Harian</button>
+                  <button type="button" class="nav-link" data-dashboard-tab="weekly" onclick="showDashboardView('weekly')">Mingguan</button>
+                  <button type="button" class="nav-link" data-dashboard-tab="monthly" onclick="showDashboardView('monthly')">Bulanan</button>
+                </div>
+              </div>
             </div>
-            <div>
-              <span class="stat-value" id="monthlyAverageText">0</span>
-              <span class="stat-label">purata harian</span>
+
+            <div id="dailyDashboard" class="dashboard-panel active">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="subheader">Ringkasan Hari Ini</div>
+                      </div>
+                      <div id="summaryText" class="h1 mb-3">0 amalan ditanda</div>
+                      <div class="progress progress-sm">
+                        <div id="progressBar" class="progress-bar" style="width: 0%" role="progressbar" aria-label="Kemajuan harian"></div>
+                      </div>
+                      <p class="text-muted mt-3 mb-0">
+                        Fokus utama ialah amalan wajib dahulu, kemudian sunnah, akhlak dan muhasabah.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <section id="checklistContainer" class="row row-cards" aria-label="Senarai amalan harian"></section>
+                </div>
+
+                <div class="col-12">
+                  <button type="button" class="btn btn-primary btn-lg w-100" onclick="saveToday()">Simpan Amalan Hari Ini</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="weeklyDashboard" class="dashboard-panel">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="subheader">Dashboard Mingguan</div>
+                      <div id="weeklySummaryText" class="h1 mb-3">0 amalan ditanda minggu ini</div>
+                      <div class="row g-3 mb-3">
+                        <div class="col-6">
+                          <div class="stat-label">Hari direkod</div>
+                          <div id="weeklyDaysText" class="stat-value">0/7</div>
+                        </div>
+                        <div class="col-6">
+                          <div class="stat-label">Purata harian</div>
+                          <div id="weeklyAverageText" class="stat-value">0</div>
+                        </div>
+                      </div>
+                      <div class="progress progress-sm">
+                        <div id="weeklyProgressBar" class="progress-bar" style="width: 0%" role="progressbar" aria-label="Kemajuan mingguan"></div>
+                      </div>
+                      <p id="weeklyRangeText" class="text-muted mt-3 mb-0"></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <section class="card h-100" aria-label="Ringkasan hari minggu ini">
+                    <div class="card-header">
+                      <h3 class="card-title">Hari Minggu Ini</h3>
+                    </div>
+                    <div id="weeklyDayList" class="list-group list-group-flush"></div>
+                  </section>
+                </div>
+
+                <div class="col-lg-6">
+                  <section class="card h-100" aria-label="Ringkasan kategori minggu ini">
+                    <div class="card-header">
+                      <h3 class="card-title">Kategori Mingguan</h3>
+                    </div>
+                    <div id="weeklyCategoryList" class="list-group list-group-flush"></div>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div id="monthlyDashboard" class="dashboard-panel">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="subheader">Dashboard Bulanan</div>
+                      <div id="monthlySummaryText" class="h1 mb-3">0 amalan ditanda bulan ini</div>
+                      <div class="row g-3 mb-3">
+                        <div class="col-6">
+                          <div class="stat-label">Hari direkod</div>
+                          <div id="monthlyDaysText" class="stat-value">0</div>
+                        </div>
+                        <div class="col-6">
+                          <div class="stat-label">Purata harian</div>
+                          <div id="monthlyAverageText" class="stat-value">0</div>
+                        </div>
+                      </div>
+                      <div class="progress progress-sm">
+                        <div id="monthlyProgressBar" class="progress-bar" style="width: 0%" role="progressbar" aria-label="Kemajuan bulanan"></div>
+                      </div>
+                      <p id="monthlyRangeText" class="text-muted mt-3 mb-0"></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <section class="card h-100" aria-label="Ringkasan minggu bulan ini">
+                    <div class="card-header">
+                      <h3 class="card-title">Minggu Bulan Ini</h3>
+                    </div>
+                    <div id="monthlyWeekList" class="list-group list-group-flush"></div>
+                  </section>
+                </div>
+
+                <div class="col-lg-6">
+                  <section class="card h-100" aria-label="Ringkasan kategori bulan ini">
+                    <div class="card-header">
+                      <h3 class="card-title">Kategori Bulanan</h3>
+                    </div>
+                    <div id="monthlyCategoryList" class="list-group list-group-flush"></div>
+                  </section>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="progress" aria-hidden="true">
-            <div id="monthlyProgressBar"></div>
-          </div>
-          <p class="soft-text" id="monthlyRangeText"></p>
         </div>
-
-        <section class="period-section" aria-label="Ringkasan minggu bulan ini">
-          <h3>Minggu Bulan Ini</h3>
-          <div id="monthlyWeekList" class="period-list"></div>
-        </section>
-
-        <section class="period-section" aria-label="Ringkasan kategori bulan ini">
-          <h3>Kategori Bulanan</h3>
-          <div id="monthlyCategoryList" class="category-breakdown"></div>
-        </section>
       </div>
     </section>
 
     <section id="resultScreen" class="screen">
-      <div class="card">
-        <h2>Alhamdulillah.</h2>
-        <p id="resultText"></p>
-        <p class="quote">
-          “Amalan yang paling dicintai Allah ialah amalan yang berterusan walaupun sedikit.”
-        </p>
-        <button type="button" onclick="goDashboard()">Kembali ke Dashboard</button>
+      <div class="container-tight py-4">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title h2">Alhamdulillah.</h2>
+            <p id="resultText" class="text-muted"></p>
+            <blockquote class="quote">
+              “Amalan yang paling dicintai Allah ialah amalan yang berterusan walaupun sedikit.”
+            </blockquote>
+            <button type="button" class="btn btn-primary btn-pill" onclick="goDashboard()">Kembali ke Dashboard</button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js" defer></script>
+  <script>
+const amalData = [
+  {
+    category: "🕌 Fardu — Keutamaan Pertama",
+    items: [
+      "Solat Subuh",
+      "Solat Zohor",
+      "Solat Asar",
+      "Solat Maghrib",
+      "Solat Isyak"
+    ]
+  },
+  {
+    category: "🤲 Sunnah yang Sangat Dituntut",
+    items: [
+      "Tahajjud",
+      "Witir",
+      "Qabliyah Subuh",
+      "Solat Dhuha",
+      "Rawatib",
+      "Membaca al-Quran",
+      "Tadabbur al-Quran",
+      "Zikir pagi & petang",
+      "Istighfar",
+      "Selawat"
+    ]
+  },
+  {
+    category: "❤️ Akhlak Seorang Muslim",
+    items: [
+      "Menjaga lisan",
+      "Menjaga pandangan",
+      "Menunaikan amanah",
+      "Menepati janji",
+      "Berbuat baik kepada ibu bapa",
+      "Berbuat baik kepada pasangan & keluarga",
+      "Membantu orang lain",
+      "Bersangka baik",
+      "Bersyukur"
+    ]
+  },
+  {
+    category: "💰 Muamalat",
+    items: [
+      "Bersedekah",
+      "Mencari rezeki yang halal",
+      "Mengelakkan pembaziran"
+    ]
+  },
+  {
+    category: "📚 Ilmu",
+    items: [
+      "Menuntut ilmu",
+      "Berkongsi ilmu"
+    ]
+  },
+  {
+    category: "🌙 Muhasabah",
+    items: [
+      "Muhasabah diri",
+      "Memohon keampunan Allah",
+      "Tidur dalam keadaan berwuduk"
+    ]
+  }
+];
+
+function getDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+const todayKey = getDateKey(new Date());
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+}
+
+function startApp() {
+  showScreen("introScreen");
+}
+
+function goDashboard() {
+  showScreen("dashboardScreen");
+  renderDate();
+  renderChecklist();
+  updateDashboard();
+}
+
+function renderDate() {
+  const date = new Date();
+
+  document.getElementById("todayDate").textContent = date.toLocaleDateString("ms-MY", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+function getSavedData() {
+  return getSavedDataByKey(todayKey);
+}
+
+function getSavedDataByKey(dateKey) {
+  try {
+    return JSON.parse(localStorage.getItem(`amal-${dateKey}`)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function saveData(data) {
+  localStorage.setItem(`amal-${todayKey}`, JSON.stringify(data));
+}
+
+function renderChecklist() {
+  const container = document.getElementById("checklistContainer");
+  const savedData = getSavedData();
+
+  container.innerHTML = "";
+
+  amalData.forEach(group => {
+    const categoryColumn = document.createElement("div");
+    categoryColumn.className = "col-md-6";
+
+    const categoryCard = document.createElement("div");
+    categoryCard.className = "card amal-category-card h-100";
+
+    const header = document.createElement("div");
+    header.className = "card-header";
+
+    const title = document.createElement("h3");
+    title.className = "card-title";
+    title.textContent = group.category;
+
+    const body = document.createElement("div");
+    body.className = "list-group list-group-flush";
+
+    header.appendChild(title);
+
+    group.items.forEach(item => {
+      const row = document.createElement("label");
+      row.className = "amal-item list-group-item";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = savedData[item] || false;
+      checkbox.onchange = () => {
+        const currentData = getSavedData();
+        currentData[item] = checkbox.checked;
+        saveData(currentData);
+        updateDashboard();
+      };
+
+      const text = document.createElement("span");
+      text.textContent = item;
+
+      row.appendChild(checkbox);
+      row.appendChild(text);
+      body.appendChild(row);
+    });
+
+    categoryCard.appendChild(header);
+    categoryCard.appendChild(body);
+    categoryColumn.appendChild(categoryCard);
+    container.appendChild(categoryColumn);
+  });
+}
+
+function getTotalItems() {
+  return amalData.reduce((total, group) => total + group.items.length, 0);
+}
+
+function getCheckedCount() {
+  return Object.values(getSavedData()).filter(Boolean).length;
+}
+
+function getCheckedCountByKey(dateKey) {
+  return Object.values(getSavedDataByKey(dateKey)).filter(Boolean).length;
+}
+
+function getRecordedDayCount(dateKeys) {
+  return dateKeys.filter(dateKey => localStorage.getItem(`amal-${dateKey}`)).length;
+}
+
+function updateProgress() {
+  const total = getTotalItems();
+  const checked = getCheckedCount();
+  const percent = total === 0 ? 0 : Math.round((checked / total) * 100);
+
+  document.getElementById("summaryText").textContent =
+    `${checked} daripada ${total} amalan ditanda`;
+
+  document.getElementById("progressBar").style.width = `${percent}%`;
+}
+
+function updateDashboard() {
+  updateProgress();
+  renderWeeklyDashboard();
+  renderMonthlyDashboard();
+}
+
+function showDashboardView(view) {
+  document.querySelectorAll("[data-dashboard-tab]").forEach(button => {
+    button.classList.toggle("active", button.dataset.dashboardTab === view);
+  });
+
+  document.querySelectorAll(".dashboard-panel").forEach(panel => {
+    panel.classList.remove("active");
+  });
+
+  document.getElementById(`${view}Dashboard`).classList.add("active");
+  updateDashboard();
+}
+
+function getDateFromKey(dateKey) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+
+  return new Date(year, month - 1, day);
+}
+
+function getStartOfWeek(date) {
+  const start = new Date(date);
+  const day = start.getDay();
+  const offset = day === 0 ? -6 : 1 - day;
+
+  start.setDate(start.getDate() + offset);
+  start.setHours(0, 0, 0, 0);
+
+  return start;
+}
+
+function getEndOfWeek(date) {
+  const end = getStartOfWeek(date);
+
+  end.setDate(end.getDate() + 6);
+
+  return end;
+}
+
+function getDateKeysInRange(startDate, endDate) {
+  const keys = [];
+  const cursor = new Date(startDate);
+
+  cursor.setHours(0, 0, 0, 0);
+
+  while (cursor <= endDate) {
+    keys.push(getDateKey(cursor));
+    cursor.setDate(cursor.getDate() + 1);
+  }
+
+  return keys;
+}
+
+function getCurrentMonthDateKeys() {
+  const date = new Date();
+  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  return getDateKeysInRange(firstDay, lastDay);
+}
+
+function formatDateRange(startKey, endKey) {
+  const start = getDateFromKey(startKey);
+  const end = getDateFromKey(endKey);
+  const options = {
+    day: "numeric",
+    month: "short"
+  };
+
+  return `${start.toLocaleDateString("ms-MY", options)} - ${end.toLocaleDateString("ms-MY", options)}`;
+}
+
+function formatDayLabel(dateKey) {
+  return getDateFromKey(dateKey).toLocaleDateString("ms-MY", {
+    weekday: "short",
+    day: "numeric",
+    month: "short"
+  });
+}
+
+function getPeriodStats(dateKeys) {
+  const totalItems = getTotalItems();
+  const checked = dateKeys.reduce((sum, dateKey) => sum + getCheckedCountByKey(dateKey), 0);
+  const possible = totalItems * dateKeys.length;
+  const percent = possible === 0 ? 0 : Math.round((checked / possible) * 100);
+  const average = dateKeys.length === 0 ? 0 : Math.round(checked / dateKeys.length);
+
+  return {
+    checked,
+    possible,
+    percent,
+    average,
+    recordedDays: getRecordedDayCount(dateKeys)
+  };
+}
+
+function getCategoryStats(dateKeys) {
+  return amalData.map(group => {
+    const checked = dateKeys.reduce((sum, dateKey) => {
+      const savedData = getSavedDataByKey(dateKey);
+      const count = group.items.filter(item => savedData[item]).length;
+
+      return sum + count;
+    }, 0);
+    const possible = group.items.length * dateKeys.length;
+    const percent = possible === 0 ? 0 : Math.round((checked / possible) * 100);
+
+    return {
+      name: group.category,
+      checked,
+      possible,
+      percent
+    };
+  });
+}
+
+function renderPeriodRows(containerId, rows) {
+  const container = document.getElementById(containerId);
+
+  container.innerHTML = "";
+
+  rows.forEach(row => {
+    const rowElement = document.createElement("div");
+    rowElement.className = "list-group-item period-row";
+
+    rowElement.innerHTML = `
+      <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
+        <div class="period-main">
+          <div class="period-name">${row.name}</div>
+          <div class="period-meta">${row.meta}</div>
+        </div>
+        <strong>${row.percent}%</strong>
+      </div>
+      <div class="mini-progress" aria-hidden="true"><span style="width: ${row.percent}%"></span></div>
+    `;
+
+    container.appendChild(rowElement);
+  });
+}
+
+function renderCategoryRows(containerId, dateKeys) {
+  const categoryStats = getCategoryStats(dateKeys);
+
+  renderPeriodRows(containerId, categoryStats.map(category => ({
+    name: category.name,
+    meta: `${category.checked} daripada ${category.possible} tanda`,
+    percent: category.percent
+  })));
+}
+
+function renderWeeklyDashboard() {
+  const start = getStartOfWeek(new Date());
+  const end = getEndOfWeek(new Date());
+  const dateKeys = getDateKeysInRange(start, end);
+  const stats = getPeriodStats(dateKeys);
+  const totalItems = getTotalItems();
+
+  document.getElementById("weeklySummaryText").textContent =
+    `${stats.checked} daripada ${stats.possible} tanda minggu ini`;
+  document.getElementById("weeklyDaysText").textContent = `${stats.recordedDays}/7`;
+  document.getElementById("weeklyAverageText").textContent = `${stats.average}/${totalItems}`;
+  document.getElementById("weeklyProgressBar").style.width = `${stats.percent}%`;
+  document.getElementById("weeklyRangeText").textContent =
+    `Tempoh ${formatDateRange(dateKeys[0], dateKeys[dateKeys.length - 1])}`;
+
+  renderPeriodRows("weeklyDayList", dateKeys.map(dateKey => {
+    const checked = getCheckedCountByKey(dateKey);
+    const percent = totalItems === 0 ? 0 : Math.round((checked / totalItems) * 100);
+
+    return {
+      name: formatDayLabel(dateKey),
+      meta: `${checked} daripada ${totalItems} amalan`,
+      percent
+    };
+  }));
+
+  renderCategoryRows("weeklyCategoryList", dateKeys);
+}
+
+function renderMonthlyDashboard() {
+  const dateKeys = getCurrentMonthDateKeys();
+  const stats = getPeriodStats(dateKeys);
+  const totalItems = getTotalItems();
+  const weeks = [];
+
+  document.getElementById("monthlySummaryText").textContent =
+    `${stats.checked} daripada ${stats.possible} tanda bulan ini`;
+  document.getElementById("monthlyDaysText").textContent = `${stats.recordedDays}/${dateKeys.length}`;
+  document.getElementById("monthlyAverageText").textContent = `${stats.average}/${totalItems}`;
+  document.getElementById("monthlyProgressBar").style.width = `${stats.percent}%`;
+  document.getElementById("monthlyRangeText").textContent =
+    `Tempoh ${formatDateRange(dateKeys[0], dateKeys[dateKeys.length - 1])}`;
+
+  for (let index = 0; index < dateKeys.length; index += 7) {
+    const weekKeys = dateKeys.slice(index, index + 7);
+    const weekStats = getPeriodStats(weekKeys);
+
+    weeks.push({
+      name: `Minggu ${weeks.length + 1}`,
+      meta: `${formatDateRange(weekKeys[0], weekKeys[weekKeys.length - 1])} · ${weekStats.checked} tanda`,
+      percent: weekStats.percent
+    });
+  }
+
+  renderPeriodRows("monthlyWeekList", weeks);
+  renderCategoryRows("monthlyCategoryList", dateKeys);
+}
+
+function saveToday() {
+  const total = getTotalItems();
+  const checked = getCheckedCount();
+
+  document.getElementById("resultText").textContent =
+    `Hari ini anda telah menanda ${checked} daripada ${total} amalan. Semoga Allah menerima usaha kecil ini dan membimbing kita untuk terus istiqamah.`;
+
+  showScreen("resultScreen");
+}
+
+function resetToday() {
+  const confirmReset = confirm("Reset semua checklist hari ini?");
+
+  if (confirmReset) {
+    localStorage.removeItem(`amal-${todayKey}`);
+    renderChecklist();
+    updateDashboard();
+  }
+}
+  </script>
 </body>
 </html>
