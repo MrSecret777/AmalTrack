@@ -436,6 +436,12 @@ h3 {
   width: fit-content;
 }
 
+.secondary-button.compact {
+  width: fit-content;
+  background: var(--warm-100);
+  color: var(--teal-800);
+}
+
 .knowledge-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -520,6 +526,97 @@ h3 {
   background: #edf6ea;
   border: 1px solid rgba(111, 143, 99, 0.24);
   border-radius: var(--radius);
+}
+
+.media-feature {
+  overflow: hidden;
+  margin-bottom: 14px;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 28px rgba(44, 54, 49, 0.06);
+}
+
+.media-poster {
+  min-height: 178px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.28), transparent 34%),
+    linear-gradient(135deg, var(--teal-800), #6f8f63);
+  color: var(--white);
+}
+
+.media-poster span {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.media-poster strong {
+  max-width: 280px;
+  font-size: 1.55rem;
+  line-height: 1.12;
+}
+
+.media-feature-body {
+  padding: 15px;
+}
+
+.media-feature-body p:last-child,
+.media-card-body p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.media-list {
+  display: grid;
+  gap: 12px;
+}
+
+.media-card {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 12px;
+  padding: 14px;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 24px rgba(44, 54, 49, 0.06);
+}
+
+.media-thumb {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, #e7dcc8, #d8e7d2);
+  color: var(--teal-800);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.media-card.video .media-thumb {
+  background: #ffe8df;
+  color: #9c331c;
+}
+
+.media-card.podcast .media-thumb {
+  background: #e5edf7;
+  color: #24537d;
+}
+
+.media-card.article .media-thumb {
+  background: #edf6ea;
+  color: var(--green-600);
+}
+
+.media-card .secondary-button {
+  grid-column: 2;
+  min-height: 38px;
 }
 
 .practice-detail {
@@ -1896,6 +1993,57 @@ const knowledgeArticles = [
   }
 ];
 
+const mediaItems = [
+  {
+    id: "poster-nasihat-harian",
+    type: "poster",
+    title: "Nasihat Harian",
+    subtitle: "Poster pilihan hari ini",
+    description: "Mulakan hari dengan satu peringatan ringkas untuk membina hati yang lebih tenang.",
+    label: "Poster Harian",
+    meta: "Dikemas kini setiap hari",
+    imageText: "Hidupkan hari dengan zikir dan syukur",
+    actionLabel: "Lihat Poster",
+    url: "#"
+  },
+  {
+    id: "live-kuliah-malam",
+    type: "video",
+    title: "Kuliah Live YouTube",
+    subtitle: "Siaran langsung",
+    description: "Ruang tontonan kuliah dan sesi ilmu secara langsung daripada Pusat Kajian.",
+    label: "YouTube Live",
+    meta: "Malam ini · 9:00 malam",
+    imageText: "LIVE",
+    actionLabel: "Tonton Live",
+    url: "#"
+  },
+  {
+    id: "podcast-tadabbur-ringkas",
+    type: "podcast",
+    title: "Podcast Tadabbur Ringkas",
+    subtitle: "Audio pilihan",
+    description: "Episod audio pendek untuk didengar ketika perjalanan, rehat atau sebelum tidur.",
+    label: "Podcast",
+    meta: "12 minit",
+    imageText: "AUDIO",
+    actionLabel: "Dengar Audio",
+    url: "#"
+  },
+  {
+    id: "artikel-muhasabah-diri",
+    type: "article",
+    title: "Muhasabah Diri dan Amalan",
+    subtitle: "Artikel penulisan",
+    description: "Penulisan ringkas tentang membina amalan yang konsisten dan tidak membebankan.",
+    label: "Artikel",
+    meta: "Bacaan 4 minit",
+    imageText: "BACA",
+    actionLabel: "Baca Artikel",
+    url: "#"
+  }
+];
+
 
 const STORAGE_KEY = "pusat_kajian_mvp_state";
 
@@ -2185,13 +2333,14 @@ function getMonthlyReport(state) {
 let state = loadState();
 let route = parseRoute();
 let selectedPracticeCategory = "semua";
+let selectedMediaType = "semua";
 let reportTab = "today";
 
 const navItems = [
   { route: "/home", label: "Utama", icon: "⌂" },
   { route: "/knowledge", label: "Ilmu", icon: "◇" },
   { route: "/practices", label: "Tambah", icon: "+" },
-  { route: "/reports", label: "Laporan", icon: "▥" },
+  { route: "/media", label: "Media", icon: "▣" },
   { route: "/profile", label: "Saya", icon: "○" }
 ];
 
@@ -2211,6 +2360,10 @@ document.addEventListener("click", (event) => {
   if (action === "navigate") navigate(nextRoute);
   if (action === "select-practice-category") {
     selectedPracticeCategory = category;
+    render();
+  }
+  if (action === "select-media-type") {
+    selectedMediaType = category;
     render();
   }
   if (action === "add-practice") {
@@ -2274,6 +2427,7 @@ function renderRoute() {
     "/home": renderHome,
     "/knowledge": renderKnowledge,
     "/practices": renderPractices,
+    "/media": renderMedia,
     "/reports": renderReports,
     "/profile": renderProfile
   };
@@ -2635,6 +2789,77 @@ function renderArticle(slug) {
   `;
 }
 
+function renderMedia() {
+  const mediaTypes = [
+    { id: "semua", name: "Semua" },
+    { id: "poster", name: "Poster" },
+    { id: "video", name: "Live" },
+    { id: "podcast", name: "Podcast" },
+    { id: "article", name: "Artikel" }
+  ];
+  const featured = mediaItems[0];
+  const filteredItems =
+    selectedMediaType === "semua"
+      ? mediaItems
+      : mediaItems.filter((item) => item.type === selectedMediaType);
+
+  return `
+    <div class="screen with-nav">
+      ${renderTopBar("Media", "Poster harian, video live, podcast audio dan artikel penulisan.")}
+      ${featured ? renderFeaturedMedia(featured) : ""}
+      <div class="chip-row">
+        ${mediaTypes
+          .map(
+            (type) => `
+              <button
+                class="chip ${selectedMediaType === type.id ? "active" : ""}"
+                data-action="select-media-type"
+                data-category="${type.id}"
+              >
+                ${type.name}
+              </button>
+            `
+          )
+          .join("")}
+      </div>
+      <section class="media-list">
+        ${filteredItems.map(renderMediaCard).join("")}
+      </section>
+    </div>
+  `;
+}
+
+function renderFeaturedMedia(item) {
+  return `
+    <section class="media-feature">
+      <div class="media-poster">
+        <span>${item.label}</span>
+        <strong>${item.imageText}</strong>
+      </div>
+      <div class="media-feature-body">
+        <p class="section-kicker">${item.subtitle}</p>
+        <h2>${item.title}</h2>
+        <p>${item.description}</p>
+      </div>
+    </section>
+  `;
+}
+
+function renderMediaCard(item) {
+  return `
+    <article class="media-card ${item.type}">
+      <div class="media-thumb">${getMediaIcon(item.type)}</div>
+      <div class="media-card-body">
+        <p class="category-label">${item.label}</p>
+        <h3>${item.title}</h3>
+        <p>${item.description}</p>
+        <span class="time-pill">${item.meta}</span>
+      </div>
+      <button class="secondary-button compact">${item.actionLabel}</button>
+    </article>
+  `;
+}
+
 function renderReports() {
   const tabs = [
     ["today", "Hari Ini"],
@@ -2755,6 +2980,7 @@ function renderProfile() {
         </div>
       </section>
       <section class="settings-list">
+        <button data-action="navigate" data-route="/reports">Laporan Amalan</button>
         <button>Pemberitahuan</button>
         <button>Peringatan</button>
         <button>Paparan</button>
@@ -2815,6 +3041,16 @@ function isNavActive(navRoute) {
 
 function getKnowledgeCategoryTitle(categoryId) {
   return knowledgeCategories.find((category) => category.id === categoryId)?.title || "Ilmu";
+}
+
+function getMediaIcon(type) {
+  const icons = {
+    poster: "PH",
+    video: "YT",
+    podcast: "AU",
+    article: "AR"
+  };
+  return icons[type] || "MD";
 }
 
 function formatDate(dateString) {
