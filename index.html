@@ -605,6 +605,10 @@ h3 {
   padding: 15px;
 }
 
+.media-feature-body .secondary-button {
+  margin-top: 12px;
+}
+
 .media-feature-body p:last-child,
 .media-card-body p {
   margin-bottom: 0;
@@ -661,6 +665,52 @@ h3 {
 .media-card .secondary-button {
   grid-column: 2;
   min-height: 38px;
+}
+
+.media-detail {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 28px rgba(44, 54, 49, 0.06);
+}
+
+.detail-poster {
+  min-height: 210px;
+  border-radius: var(--radius);
+}
+
+.media-detail h1 {
+  margin-bottom: 0;
+  font-size: 1.72rem;
+}
+
+.media-detail .lead {
+  color: var(--teal-800);
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.media-detail section {
+  padding-top: 4px;
+}
+
+.media-detail h2 {
+  margin-bottom: 7px;
+  font-size: 1rem;
+}
+
+.media-detail p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.68;
+}
+
+.media-author {
+  padding-top: 8px;
+  color: var(--teal-800) !important;
+  font-weight: 800;
 }
 
 .practice-detail {
@@ -2134,6 +2184,49 @@ const knowledgeArticles = [
 
 const mediaItems = [
   {
+    id: "poster-minum-air-laut",
+    type: "poster",
+    title: "Minum Air Laut yang Menyebabkan Diri Semakin Dahaga?",
+    subtitle: "Poster muhasabah diri",
+    description: "Renungan tentang mencari ketenangan pada pandangan manusia, sedangkan hati hanya tenang dengan mengingati Allah.",
+    label: "Poster Harian",
+    meta: "Muhasabah · Qana'ah",
+    imageText: "Ketenangan bukan pada pandangan manusia",
+    actionLabel: "Lihat Poster",
+    url: "#",
+    sections: [
+      [
+        "Kita mencari pada dunia",
+        "Ramai orang sebenarnya sedang mencari ketenangan. Tetapi tanpa sedar, apa yang dilakukan setiap hari bertentangan dengan ketenangan yang sedang dicari. Kita mahu dilihat kaya, berjaya, hebat, berilmu, baik, soleh, bahkan mahu dilihat tawaduk."
+      ],
+      [
+        "Pandangan manusia tidak memberi ketenangan",
+        "Media sosial menjadikan perkara ini semakin mudah. Kita posting sesuatu, kemudian menunggu siapa melihat, siapa suka, siapa komen dan siapa kongsi. Tidak salah untuk berkongsi manfaat, tetapi hati perlu bertanya: aku mahu mesej ini dilihat, atau sebenarnya aku mahu diriku dilihat?"
+      ],
+      [
+        "Ketenangan dengan mengingati Allah",
+        "Allah berfirman: أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ. Maksudnya: Ketahuilah, dengan mengingati Allah hati menjadi tenang. Rujukan: Surah al-Ra'd 13:28."
+      ],
+      [
+        "Apabila berpaling daripada peringatan Allah",
+        "Allah berfirman: وَمَنْ أَعْرَضَ عَنْ ذِكْرِي فَإِنَّ لَهُ مَعِيشَةً ضَنْكًا. Maksudnya: Dan sesiapa yang berpaling daripada peringatan-Ku, maka sesungguhnya baginya kehidupan yang sempit. Rujukan: Surah Taha 20:124."
+      ],
+      [
+        "Amaran Rasulullah SAW",
+        "Rasulullah SAW mengingatkan bahawa sesiapa yang menjadikan dunia sebagai kepentingan utamanya, Allah akan mencerai-beraikan urusannya dan menjadikan kefakiran berada di antara kedua-dua matanya. Sesiapa yang menjadikan akhirat sebagai niatnya, Allah akan menghimpunkan urusannya, menjadikan kekayaan di dalam hatinya, dan dunia datang kepadanya dalam keadaan tunduk."
+      ],
+      [
+        "Muhasabah diri",
+        "Sebelum melakukan sesuatu, tanyalah hati: kalau tidak ada seorang manusia pun yang tahu apa yang aku lakukan ini, adakah aku masih mahu melakukannya? Dan sebelum terlalu memikirkan apa manusia akan kata, belajarlah bertanya: bagaimana kedudukanku di sisi Allah?"
+      ],
+      [
+        "Apa yang perlu dilakukan",
+        "Perbanyakkan zikir mengingati Allah. Kembalikan niat kepada Allah. Kurangkan kebergantungan kepada pandangan manusia. Latih hati dengan qana'ah. Jadikan media sosial sebagai medan manfaat, bukan medan mencari pujian."
+      ]
+    ],
+    author: "Abdullah al-Hadi al-Hasani al-Mahmudi"
+  },
+  {
     id: "poster-nasihat-harian",
     type: "poster",
     title: "Nasihat Harian",
@@ -2560,6 +2653,9 @@ function renderRoute() {
   }
   if (route.startsWith("/knowledge/category/")) {
     return renderKnowledgeCategory(route.replace("/knowledge/category/", ""));
+  }
+  if (route.startsWith("/media/item/")) {
+    return renderMediaDetail(route.replace("/media/item/", ""));
   }
 
   const routes = {
@@ -3013,6 +3109,9 @@ function renderFeaturedMedia(item) {
         <p class="section-kicker">${item.subtitle}</p>
         <h2>${item.title}</h2>
         <p>${item.description}</p>
+        <button class="secondary-button compact" data-action="navigate" data-route="/media/item/${item.id}">
+          ${item.actionLabel}
+        </button>
       </div>
     </section>
   `;
@@ -3028,8 +3127,48 @@ function renderMediaCard(item) {
         <p>${item.description}</p>
         <span class="time-pill">${item.meta}</span>
       </div>
-      <button class="secondary-button compact">${item.actionLabel}</button>
+      <button class="secondary-button compact" data-action="navigate" data-route="/media/item/${item.id}">
+        ${item.actionLabel}
+      </button>
     </article>
+  `;
+}
+
+function renderMediaDetail(id) {
+  const item = mediaItems.find((media) => media.id === id);
+  if (!item) {
+    return `
+      <div class="screen with-nav">
+        ${renderBackBar("Kandungan", "/media")}
+        <div class="empty-state"><p>Kandungan tidak ditemui.</p></div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="screen with-nav">
+      ${renderBackBar(item.label, "/media")}
+      <article class="media-detail">
+        <div class="media-poster detail-poster">
+          <span>${item.subtitle}</span>
+          <strong>${item.imageText}</strong>
+        </div>
+        <p class="category-label">${item.meta}</p>
+        <h1>${item.title}</h1>
+        <p class="lead">${item.description}</p>
+        ${(item.sections || [])
+          .map(
+            ([heading, content]) => `
+              <section>
+                <h2>${heading}</h2>
+                <p>${content}</p>
+              </section>
+            `
+          )
+          .join("")}
+        ${item.author ? `<p class="media-author">${item.author}</p>` : ""}
+      </article>
+    </div>
   `;
 }
 
