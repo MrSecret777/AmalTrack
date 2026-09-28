@@ -230,6 +230,10 @@ h3 {
   margin-top: 22px;
 }
 
+.section-block.first-section {
+  margin-top: 0;
+}
+
 .section-heading {
   justify-content: space-between;
   margin-bottom: 12px;
@@ -330,6 +334,42 @@ h3 {
 .add-practice-button span {
   font-size: 1.2rem;
   line-height: 1;
+}
+
+.home-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.home-action-grid button {
+  min-height: 72px;
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--teal-800);
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(44, 54, 49, 0.06);
+}
+
+.home-action-grid span {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.text-button {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--warm-100);
+  color: var(--teal-800);
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .top-bar {
@@ -575,6 +615,10 @@ h3 {
 .media-list {
   display: grid;
   gap: 12px;
+}
+
+.media-list.compact-list .media-card {
+  box-shadow: 0 8px 18px rgba(44, 54, 49, 0.05);
 }
 
 .media-card {
@@ -2034,12 +2078,12 @@ const mediaItems = [
     id: "artikel-muhasabah-diri",
     type: "article",
     title: "Muhasabah Diri dan Amalan",
-    subtitle: "Artikel penulisan",
-    description: "Penulisan ringkas tentang membina amalan yang konsisten dan tidak membebankan.",
-    label: "Artikel",
+    subtitle: "Penulisan ringan",
+    description: "Catatan ringkas tentang membina amalan yang konsisten dan tidak membebankan.",
+    label: "Penulisan",
     meta: "Bacaan 4 minit",
     imageText: "BACA",
-    actionLabel: "Baca Artikel",
+    actionLabel: "Baca Penulisan",
     url: "#"
   }
 ];
@@ -2338,9 +2382,9 @@ let reportTab = "today";
 
 const navItems = [
   { route: "/home", label: "Utama", icon: "⌂" },
+  { route: "/practices", label: "Amalan", icon: "✓" },
+  { route: "/media", label: "Kandungan", icon: "▣" },
   { route: "/knowledge", label: "Ilmu", icon: "◇" },
-  { route: "/practices", label: "Tambah", icon: "+" },
-  { route: "/media", label: "Media", icon: "▣" },
   { route: "/profile", label: "Saya", icon: "○" }
 ];
 
@@ -2438,13 +2482,7 @@ function renderRoute() {
 function renderHome() {
   const summary = getDailySummary(state);
   const dateLabel = formatDate(summary.completionDate);
-  const practicesMarkup =
-    summary.activePractices.length > 0
-      ? summary.activePractices.map((item) => renderHomePractice(item, summary.completedIds)).join("")
-      : `<div class="empty-state">
-          <p>Belum ada amalan aktif.</p>
-          <button class="primary-button" data-action="navigate" data-route="/practices">Tambah Amalan</button>
-        </div>`;
+  const latestMedia = mediaItems.slice(1, 4);
 
   return `
     <div class="screen with-nav">
@@ -2459,7 +2497,7 @@ function renderHome() {
 
       <section class="progress-panel">
         <div>
-          <p class="section-kicker">Amalan hari ini</p>
+          <p class="section-kicker">Laporan hari ini</p>
           <strong>${summary.percentage}%</strong>
           <p>${summary.completed} daripada ${summary.total} amalan selesai hari ini</p>
         </div>
@@ -2474,17 +2512,34 @@ function renderHome() {
         <div><span>Jumlah amalan</span><strong>${summary.total}</strong></div>
       </section>
 
-      <section class="section-block">
-        <div class="section-heading">
-          <h2>Amalan Saya</h2>
-        </div>
-        <div class="practice-stack">${practicesMarkup}</div>
+      <section class="home-action-grid" aria-label="Akses pantas">
+        <button data-action="navigate" data-route="/reports">
+          <span>▥</span>
+          Laporan Penuh
+        </button>
+        <button data-action="navigate" data-route="/media">
+          <span>▣</span>
+          Semua Kandungan
+        </button>
       </section>
 
-      <button class="add-practice-button" data-action="navigate" data-route="/practices">
-        <span>+</span>
-        Tambah Amalan
-      </button>
+      <section class="section-block first-section">
+        <div class="section-heading">
+          <h2>Pilihan Hari Ini</h2>
+          <button class="text-button" data-action="navigate" data-route="/media">Kandungan</button>
+        </div>
+        ${mediaItems[0] ? renderFeaturedMedia(mediaItems[0]) : ""}
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <h2>Kandungan Terkini</h2>
+          <button class="text-button" data-action="navigate" data-route="/media">Lihat semua</button>
+        </div>
+        <div class="media-list compact-list">
+          ${latestMedia.map(renderMediaCard).join("")}
+        </div>
+      </section>
     </div>
   `;
 }
@@ -2514,6 +2569,14 @@ function renderHomePractice(item, completedIds) {
 }
 
 function renderPractices() {
+  const summary = getDailySummary(state);
+  const practicesMarkup =
+    summary.activePractices.length > 0
+      ? summary.activePractices.map((item) => renderHomePractice(item, summary.completedIds)).join("")
+      : `<div class="empty-state">
+          <p>Belum ada amalan aktif.</p>
+          <p>Pilih amalan daripada senarai di bawah untuk mula membina rutin harian.</p>
+        </div>`;
   const categories = [
     { id: "semua", name: "Semua" },
     ...practiceCategories.sort((a, b) => a.sortOrder - b.sortOrder)
@@ -2525,7 +2588,22 @@ function renderPractices() {
 
   return `
     <div class="screen with-nav">
-      ${renderTopBar("Tambah Amalan", "Tambah atau keluarkan amalan daripada senarai harian anda.")}
+      ${renderTopBar("Amalan", "Semua amalan harian dikumpulkan di sini.")}
+
+      <section class="section-block first-section">
+        <div class="section-heading">
+          <h2>Amalan Hari Ini</h2>
+          <span>${summary.completed}/${summary.total} selesai</span>
+        </div>
+        <div class="practice-stack">${practicesMarkup}</div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <h2>Senarai Amalan</h2>
+          <span>Tambah atau keluarkan</span>
+        </div>
+      </section>
       <div class="chip-row">
         ${categories
           .map(
@@ -2598,7 +2676,7 @@ function renderPracticeDetail(slug) {
 
   return `
     <div class="screen with-nav">
-      ${renderBackBar("Perincian Amalan", added ? "/home" : "/practices")}
+      ${renderBackBar("Perincian Amalan", "/practices")}
       <article class="practice-detail">
         <div class="practice-detail-header">
           <div class="practice-icon large">${practice.icon}</div>
@@ -2795,7 +2873,7 @@ function renderMedia() {
     { id: "poster", name: "Poster" },
     { id: "video", name: "Live" },
     { id: "podcast", name: "Podcast" },
-    { id: "article", name: "Artikel" }
+    { id: "article", name: "Penulisan" }
   ];
   const featured = mediaItems[0];
   const filteredItems =
@@ -2805,7 +2883,7 @@ function renderMedia() {
 
   return `
     <div class="screen with-nav">
-      ${renderTopBar("Media", "Poster harian, video live, podcast audio dan artikel penulisan.")}
+      ${renderTopBar("Kandungan", "Poster harian, video live, podcast audio dan penulisan ringan.")}
       ${featured ? renderFeaturedMedia(featured) : ""}
       <div class="chip-row">
         ${mediaTypes
@@ -3034,7 +3112,7 @@ function renderBackBar(title, backRoute) {
 }
 
 function isNavActive(navRoute) {
-  if (navRoute === "/home" && route.startsWith("/practice/")) return true;
+  if (navRoute === "/practices" && route.startsWith("/practice/")) return true;
   if (navRoute === "/knowledge" && route.startsWith("/knowledge")) return true;
   return route === navRoute;
 }
