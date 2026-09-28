@@ -2371,7 +2371,7 @@ function renderPractices() {
 
   return `
     <div class="screen with-nav">
-      ${renderTopBar("Tambah Amalan", "Senarai amalan rasmi yang disediakan oleh Pusat Kajian.")}
+      ${renderTopBar("Tambah Amalan", "Tambah atau keluarkan amalan daripada senarai harian anda.")}
       <div class="chip-row">
         ${categories
           .map(
@@ -2414,12 +2414,11 @@ function renderPracticeCard(practice) {
           <span class="time-pill">${practice.recommendedTime}</span>
         </div>
         <button
-          class="${added ? "secondary-button added" : "primary-button compact"}"
-          data-action="add-practice"
+          class="${added ? "secondary-button compact" : "primary-button compact"}"
+          data-action="${added ? "remove-practice" : "add-practice"}"
           data-id="${practice.id}"
-          ${added ? "disabled" : ""}
         >
-          ${added ? "✓ Telah ditambah" : "+ Tambah"}
+          ${added ? "Keluarkan" : "+ Tambah"}
         </button>
       </div>
     </article>
@@ -2745,33 +2744,14 @@ function renderMonthlyReport() {
 }
 
 function renderProfile() {
-  const activePractices = getActiveUserPractices(state);
   return `
     <div class="screen with-nav">
-      ${renderTopBar("Saya", "Profil dan pengurusan amalan.")}
+      ${renderTopBar("Saya", "Profil dan tetapan akaun.")}
       <section class="profile-card">
         <div class="avatar">${state.user.name.slice(0, 1)}</div>
         <div>
           <h2>${state.user.name}</h2>
           <p>${state.user.email}</p>
-        </div>
-      </section>
-      <section class="section-block">
-        <div class="section-heading">
-          <h2>Amalan Saya</h2>
-          <span>${activePractices.length} amalan aktif</span>
-        </div>
-        <div class="manage-list">
-          ${activePractices
-            .map(
-              (item) => `
-                <div class="manage-row">
-                  <span>${item.practice.title}</span>
-                  <button data-action="remove-practice" data-id="${item.practiceId}">Keluarkan</button>
-                </div>
-              `
-            )
-            .join("")}
         </div>
       </section>
       <section class="settings-list">
